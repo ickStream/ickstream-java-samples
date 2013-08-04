@@ -38,6 +38,8 @@
             <excludes>
                 <exclude>*:javadoc</exclude>
             </excludes>
+            <outputFileNameMapping>${artifact.artifactId}-${artifact.baseVersion}.${artifact.extension}
+            </outputFileNameMapping>
             <outputDirectory>/lib</outputDirectory>
             <useProjectArtifact>false</useProjectArtifact>
             <unpack>false</unpack>
@@ -47,6 +49,8 @@
             <includes>
                 <include>*:javadoc</include>
             </includes>
+            <outputFileNameMapping>${artifact.artifactId}-${artifact.baseVersion}.${artifact.extension}
+            </outputFileNameMapping>
             <outputDirectory>/docs</outputDirectory>
             <useProjectArtifact>false</useProjectArtifact>
             <unpack>false</unpack>
