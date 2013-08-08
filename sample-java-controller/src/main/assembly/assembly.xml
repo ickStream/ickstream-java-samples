@@ -17,6 +17,7 @@
             <directory>${build.directory}</directory>
             <fileMode>0755</fileMode>
             <includes>
+                <include>*-sources.jar</include>
                 <include>*.sh</include>
                 <include>*.py</include>
                 <include>grinder.properties</include>
