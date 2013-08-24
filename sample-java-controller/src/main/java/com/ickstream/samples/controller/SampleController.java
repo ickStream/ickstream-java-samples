@@ -270,10 +270,28 @@ public class SampleController implements DeviceListener, MessageListener {
      * @return The registered device or null if registration failed
      */
     public DeviceResponse registerDevice(CoreService coreService, String ipAddress) throws BackingStoreException {
-        String macAddress = NetworkAddressHelper.getNetworkHardwareAddress();
-        AddDeviceWithHardwareIdRequest addDeviceRequest = new AddDeviceWithHardwareIdRequest("SampleController", "My Sample Controller", ipAddress, API_KEY, macAddress);
+        CreateDeviceRegistrationTokenRequest tokenRequest = new CreateDeviceRegistrationTokenRequest();
+        // Just generate a random UUID to use as identity
+        tokenRequest.setId(UUID.randomUUID().toString().toUpperCase());
+        tokenRequest.setName("My Sample Controller");
+        tokenRequest.setApplicationId(API_KEY);
         try {
-            AddDeviceResponse device = coreService.addDeviceWithHardwareId(addDeviceRequest);
+            // Create a device registration token
+            String deviceRegistrationToken = coreService.createDeviceRegistrationToken(tokenRequest);
+            AddDeviceRequest request = new AddDeviceRequest();
+
+            // Get the local IP address
+            // This will be used in future version to improve discovery when multiple sub networks are involved
+            request.setAddress(NetworkAddressHelper.getNetworkAddress());
+
+            // Let's just use the MAC address as hardware identity
+            request.setHardwareId(NetworkAddressHelper.getNetworkHardwareAddress());
+            request.setApplicationId(API_KEY);
+
+            // Get a separate instance of Core Service for the device registration since we need to use the
+            // device registration token as authentication for this call
+            // Then make the call to register the device in the Cloud Core service
+            AddDeviceResponse device = CoreServiceFactory.getCoreService(deviceRegistrationToken).addDevice(request);
             preferences.put("accessToken", device.getAccessToken());
             preferences.flush();
             return device;
