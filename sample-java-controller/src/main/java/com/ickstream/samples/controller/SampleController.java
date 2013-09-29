@@ -9,7 +9,7 @@ import com.googlecode.lanterna.TerminalFacade;
 import com.googlecode.lanterna.input.Key;
 import com.googlecode.lanterna.screen.Screen;
 import com.googlecode.lanterna.terminal.Terminal;
-import com.ickstream.common.ickdiscovery.*;
+import com.ickstream.common.ickp2p.*;
 import com.ickstream.common.jsonrpc.JsonHelper;
 import com.ickstream.common.jsonrpc.JsonRpcResponse;
 import com.ickstream.common.jsonrpc.MessageHandlerAdapter;
@@ -33,7 +33,7 @@ import java.util.prefs.Preferences;
 /**
  * Simple controller that shows how to discover devices and services
  */
-public class SampleController implements DeviceListener, MessageListener {
+public class SampleController extends DiscoveryAdapter implements MessageListener {
     /**
      * API key, only use this key in this sample client
      * When you develop your own app, you should request a specific API-key for it
@@ -73,7 +73,7 @@ public class SampleController implements DeviceListener, MessageListener {
     /**
      * ickStream P2P implementation
      */
-    private IckDiscovery ickDiscovery = null;
+    private IckP2p ickP2p = null;
 
     /**
      * Dummy object which we use to handle synchronization to make the code thread safe without having to
@@ -222,28 +222,37 @@ public class SampleController implements DeviceListener, MessageListener {
         }));
 
         // Setup ickStream P2P module and announce the current device on the network
-        ickDiscovery = new IckDiscoveryJNI();
+        ickP2p = new IckP2pJNI();
         // Setup device listener so we get information about new, updated, removed devices on local network
-        ickDiscovery.addDeviceListener(this);
+        ickP2p.addDiscoveryListener(this);
         // Setup message listener so we can receive messages from other devices on local network
-        ickDiscovery.addMessageListener(this);
+        ickP2p.addMessageListener(this);
         System.out.println("Initiating discovery on local network...");
-        ickDiscovery.initDiscovery(device.getId(), ipAddress, device.getName(), null);
-        ickDiscovery.addService(ServiceType.CONTROLLER);
+        try {
+            // Initialize ickP2p
+            ickP2p.create(device.getName(), device.getId(), null, null, null, ServiceType.CONTROLLER);
+            // Add all network interfaces which we want to perform discovery on
+            ickP2p.addInterface(ipAddress, null);
+            // Start the discovery
+            ickP2p.resume();
 
-        // Initialize console and print information about discovered devices and services
-        screen.startScreen();
-        printDevicesAndServices();
+            // Initialize console and print information about discovered devices and services
+            screen.startScreen();
+            printDevicesAndServices();
 
-        // Wait for Ctrl+c
-        Key key = screen.readInput();
-        while (key == null || (!(key.isCtrlPressed() && key.getCharacter() == 'c'))) {
-            Thread.sleep(20);
-            key = screen.readInput();
+            // Wait for Ctrl+c
+            Key key = screen.readInput();
+            while (key == null || (!(key.isCtrlPressed() && key.getCharacter() == 'c'))) {
+                Thread.sleep(20);
+                key = screen.readInput();
+            }
+
+            // Shutdown ickStream P2P module
+            shutdown();
+        } catch (IckP2pException e) {
+            System.err.println("Failed to initialize ickP2p");
+            e.printStackTrace();
         }
-
-        // Shutdown ickStream P2P module
-        shutdown();
     }
 
 
@@ -255,10 +264,15 @@ public class SampleController implements DeviceListener, MessageListener {
         screen.stopScreen();
 
         // Stop ickStream P2P if it has been started
-        if (ickDiscovery != null) {
+        if (ickP2p != null) {
             System.out.println("Shutting down...");
-            ickDiscovery.endDiscovery();
-            ickDiscovery = null;
+            try {
+                ickP2p.end();
+                System.out.println("ickP2p successfully shutdown");
+            } catch (IckP2pException e) {
+                System.err.println("Failed to properly shutdown ickP2p");
+            }
+            ickP2p = null;
         }
     }
 
@@ -367,21 +381,19 @@ public class SampleController implements DeviceListener, MessageListener {
 
 
     /**
-     * When a new device is discovered, we detect if it's a service or player and add
+     * When a new device is discovered and connected, we detect if it's a service or player and add
      * it to the appropriate list
      *
-     * @param deviceId   The identity of the device
-     * @param deviceName The name of the device or null if it doesn't have a name
-     * @param services   The service which the device offers
+     * @param event The discovery information related to the discovered device
      */
     @Override
-    public void onDeviceAdded(String deviceId, String deviceName, ServiceType services) {
+    public void onConnectedDevice(DiscoveryEvent event) {
         // If discovered device is a service
-        if (services.isType(ServiceType.SERVICE)) {
-            final Service service = new Service(deviceId, deviceName);
+        if (event.getServices().isType(ServiceType.SERVICE)) {
+            final Service service = new Service(event.getDeviceId(), event.getDeviceName());
 
             synchronized (syncObject) {
-                availableServices.put(deviceId, service);
+                availableServices.put(event.getDeviceId(), service);
             }
 
             // Request additional information about the service
@@ -389,52 +401,37 @@ public class SampleController implements DeviceListener, MessageListener {
         } else {
             // Remove the device from the service list in case it previously reported to offer a service
             synchronized (syncObject) {
-                availableServices.remove(deviceId);
+                availableServices.remove(event.getDeviceId());
             }
         }
 
         // If discovered device is a player
-        if (services.isType(ServiceType.PLAYER)) {
+        if (event.getServices().isType(ServiceType.PLAYER)) {
             // Lookup the device among devices registered in the Cloud Code service so we can
             // indicate if it's registered or not
-            DeviceResponse registeredDevice = registeredDevices.get(deviceId);
+            DeviceResponse registeredDevice = registeredDevices.get(event.getDeviceId());
             if (registeredDevice != null) {
-                Device player = new Device(deviceId, registeredDevice);
+                Device player = new Device(event.getDeviceId(), registeredDevice);
                 synchronized (syncObject) {
-                    availablePlayers.put(deviceId, player);
+                    availablePlayers.put(event.getDeviceId(), player);
                 }
                 // Request additional information about the player
                 getMoreInformationAboutPlayer(player);
             } else {
-                Device player = new Device(deviceId, deviceName);
+                Device player = new Device(event.getDeviceId(), event.getDeviceName());
                 synchronized (syncObject) {
-                    availablePlayers.put(deviceId, player);
+                    availablePlayers.put(event.getDeviceId(), player);
                 }
                 // Request additional information about the player
                 getMoreInformationAboutPlayer(player);
             }
         } else {
             // Remove the device from the player list in case it previously reported to offer a player service
-            availablePlayers.remove(deviceId);
+            availablePlayers.remove(event.getDeviceId());
         }
 
         // Refresh the console user interface
         printDevicesAndServices();
-    }
-
-
-    /**
-     * When a device is updated, we do the same as when a new device is added.
-     * The reason for this is a temporary workaround for a behavior in ickStream P2P where update indications
-     * can be generated for completely new devices
-     *
-     * @param deviceId   The identity of the discovered device
-     * @param deviceName The name of the discovered device or null if it doesn't have a name
-     * @param services   The services which the discovered device offers
-     */
-    @Override
-    public void onDeviceUpdated(String deviceId, String deviceName, ServiceType services) {
-        onDeviceAdded(deviceId, deviceName, services);
     }
 
 
@@ -444,7 +441,7 @@ public class SampleController implements DeviceListener, MessageListener {
      * @param deviceId The identity for the removed device
      */
     @Override
-    public void onDeviceRemoved(String deviceId) {
+    public void onDisconnectedDevice(String deviceId) {
         // Ensure thread safety as this callback can come from multiple parallel threads
         synchronized (syncObject) {
             availablePlayers.remove(deviceId);
@@ -462,7 +459,7 @@ public class SampleController implements DeviceListener, MessageListener {
     public void getMoreInformationAboutPlayer(final Device player) {
         // Make an asynchronous call to get more information about the service
         // This call is mainly here to show the concept
-        PlayerService playerService = new PlayerService(ickDiscovery, player.getId());
+        PlayerService playerService = new PlayerService(ServiceType.CONTROLLER, ickP2p, player.getId());
         player.setPlayerService(playerService);
 
         playerService.getPlayerConfiguration(new MessageHandlerAdapter<PlayerConfigurationResponse>() {
@@ -512,7 +509,7 @@ public class SampleController implements DeviceListener, MessageListener {
     public void getMoreInformationAboutLocalService(final Service service) {
         // Make an asynchronous call to get more information about the service
         // This call is mainly here to show the concept
-        DeviceContentService serviceClient = new DeviceContentService(service.getId(), ickDiscovery);
+        DeviceContentService serviceClient = new DeviceContentService(ServiceType.CONTROLLER, service.getId(), ickP2p);
         service.setContentService(serviceClient);
         getMoreInformationAboutService(service);
     }
@@ -557,7 +554,7 @@ public class SampleController implements DeviceListener, MessageListener {
      * @param message           The message
      */
     @Override
-    public void onMessage(String sourceDeviceId, String targetDeviceId, ServiceType targetServiceType, byte[] message) {
+    public void onMessage(String sourceDeviceId, ServiceType sourceServiceType, String targetDeviceId, ServiceType targetServiceType, byte[] message) {
         Device player = null;
         Service service = null;
 

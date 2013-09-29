@@ -20,60 +20,60 @@
 
     <dependencies>
         <dependency>
-            <groupId>com.ickstream.common.ickdiscovery.java</groupId>
-            <artifactId>libickDiscoveryJNI64</artifactId>
+            <groupId>com.ickstream.common.ickp2p.java</groupId>
+            <artifactId>libickstream-ickp2p-java-native-jni64</artifactId>
             <type>jnilib</type>
             <version>1.0-SNAPSHOT</version>
         </dependency>
 
         <dependency>
-            <groupId>com.ickstream.common.ickdiscovery.java</groupId>
-            <artifactId>libickDiscoveryJNI32</artifactId>
+            <groupId>com.ickstream.common.ickp2p.java</groupId>
+            <artifactId>libickstream-ickp2p-java-native-jni32</artifactId>
             <type>jnilib</type>
             <version>1.0-SNAPSHOT</version>
         </dependency>
 
         <dependency>
-            <groupId>com.ickstream.common.ickdiscovery.java</groupId>
-            <artifactId>libickDiscoveryJNI64</artifactId>
+            <groupId>com.ickstream.common.ickp2p.java</groupId>
+            <artifactId>libickstream-ickp2p-java-native-jni64</artifactId>
             <type>so</type>
             <version>1.0-SNAPSHOT</version>
         </dependency>
 
         <dependency>
-            <groupId>com.ickstream.common.ickdiscovery.java</groupId>
-            <artifactId>libickDiscoveryJNI32</artifactId>
+            <groupId>com.ickstream.common.ickp2p.java</groupId>
+            <artifactId>libickstream-ickp2p-java-native-jni32</artifactId>
             <type>so</type>
             <version>1.0-SNAPSHOT</version>
         </dependency>
 
         <dependency>
-            <groupId>com.ickstream.common.ickdiscovery.java</groupId>
-            <artifactId>ickDiscoveryJava</artifactId>
+            <groupId>com.ickstream.common.ickp2p.java</groupId>
+            <artifactId>ickstream-ickp2p-java</artifactId>
             <version>1.0-SNAPSHOT</version>
         </dependency>
 
         <dependency>
             <groupId>com.ickstream.common.ickprotocol</groupId>
-            <artifactId>ickProtocolCommon</artifactId>
+            <artifactId>ickstream-ickprotocol-common</artifactId>
             <version>1.0-SNAPSHOT</version>
         </dependency>
 
         <dependency>
             <groupId>com.ickstream.common.ickprotocol</groupId>
-            <artifactId>ickProtocolCoreService</artifactId>
+            <artifactId>ickstream-ickprotocol-core</artifactId>
             <version>1.0-SNAPSHOT</version>
         </dependency>
 
         <dependency>
             <groupId>com.ickstream.common.ickprotocol</groupId>
-            <artifactId>ickProtocolContentService</artifactId>
+            <artifactId>ickstream-ickprotocol-content</artifactId>
             <version>1.0-SNAPSHOT</version>
         </dependency>
 
         <dependency>
             <groupId>com.ickstream.common.ickprotocol</groupId>
-            <artifactId>ickProtocolPlayerService</artifactId>
+            <artifactId>ickstream-ickprotocol-player</artifactId>
             <version>1.0-SNAPSHOT</version>
         </dependency>
 
@@ -91,43 +91,43 @@
 
         <!-- javadoc dependencies -->
         <dependency>
-            <groupId>com.ickstream.common.ickdiscovery.java</groupId>
-            <artifactId>ickDiscoveryJava</artifactId>
+            <groupId>com.ickstream.common.ickp2p.java</groupId>
+            <artifactId>ickstream-ickp2p-java</artifactId>
             <version>1.0-SNAPSHOT</version>
             <classifier>javadoc</classifier>
         </dependency>
 
         <dependency>
-            <groupId>com.ickstream.common.ickdiscovery.java</groupId>
-            <artifactId>ickDiscoveryJavaInterface</artifactId>
-            <version>1.0-SNAPSHOT</version>
-            <classifier>javadoc</classifier>
-        </dependency>
-
-        <dependency>
-            <groupId>com.ickstream.common.ickprotocol</groupId>
-            <artifactId>ickProtocolCommon</artifactId>
+            <groupId>com.ickstream.common.ickp2p.java</groupId>
+            <artifactId>ickstream-ickp2p-java-interface</artifactId>
             <version>1.0-SNAPSHOT</version>
             <classifier>javadoc</classifier>
         </dependency>
 
         <dependency>
             <groupId>com.ickstream.common.ickprotocol</groupId>
-            <artifactId>ickProtocolCoreService</artifactId>
+            <artifactId>ickstream-ickprotocol-common</artifactId>
             <version>1.0-SNAPSHOT</version>
             <classifier>javadoc</classifier>
         </dependency>
 
         <dependency>
             <groupId>com.ickstream.common.ickprotocol</groupId>
-            <artifactId>ickProtocolContentService</artifactId>
+            <artifactId>ickstream-ickprotocol-core</artifactId>
             <version>1.0-SNAPSHOT</version>
             <classifier>javadoc</classifier>
         </dependency>
 
         <dependency>
             <groupId>com.ickstream.common.ickprotocol</groupId>
-            <artifactId>ickProtocolPlayerService</artifactId>
+            <artifactId>ickstream-ickprotocol-content</artifactId>
+            <version>1.0-SNAPSHOT</version>
+            <classifier>javadoc</classifier>
+        </dependency>
+
+        <dependency>
+            <groupId>com.ickstream.common.ickprotocol</groupId>
+            <artifactId>ickstream-ickprotocol-player</artifactId>
             <version>1.0-SNAPSHOT</version>
             <classifier>javadoc</classifier>
         </dependency>
