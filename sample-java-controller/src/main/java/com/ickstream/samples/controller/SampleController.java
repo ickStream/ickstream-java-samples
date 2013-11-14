@@ -14,6 +14,7 @@ import com.ickstream.common.jsonrpc.JsonHelper;
 import com.ickstream.common.jsonrpc.JsonRpcResponse;
 import com.ickstream.common.jsonrpc.MessageHandlerAdapter;
 import com.ickstream.protocol.common.ChunkedRequest;
+import com.ickstream.protocol.common.IckStreamTrustManager;
 import com.ickstream.protocol.common.NetworkAddressHelper;
 import com.ickstream.protocol.common.exception.ServiceException;
 import com.ickstream.protocol.common.exception.ServiceTimeoutException;
@@ -88,6 +89,7 @@ public class SampleController extends DiscoveryAdapter implements MessageListene
      * @param args Arguments, takes a user access token as argument
      */
     public static void main(String[] args) throws BackingStoreException, InterruptedException {
+        IckStreamTrustManager.init();
         if (args.length == 0) {
             new SampleController().run(null);
         } else {
@@ -129,6 +131,7 @@ public class SampleController extends DiscoveryAdapter implements MessageListene
             return;
         } catch (ServiceException e) {
             System.err.println("Can't reach the Cloud Core service");
+            e.printStackTrace();
             return;
         } catch (ServiceTimeoutException e) {
             System.err.println("Can't reach the Cloud Core service within specified timeout");
