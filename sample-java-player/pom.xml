@@ -1,0 +1,214 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+  ~ Copyright (C) 2013 ickStream GmbH
+  ~ All rights reserved
+  -->
+
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+
+    <groupId>com.ickstream.samples.player</groupId>
+    <artifactId>sample-java-player</artifactId>
+    <version>1.0-SNAPSHOT</version>
+    <organization>
+        <name>ickStream GmbH</name>
+        <url>http://www.ickstream.com</url>
+    </organization>
+
+    <properties>
+        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+    </properties>
+
+    <dependencies>
+        <dependency>
+            <groupId>com.ickstream.common.ickp2p.java</groupId>
+            <artifactId>libickstream-ickp2p-java-native-jni64</artifactId>
+            <type>jnilib</type>
+            <version>1.0-SNAPSHOT</version>
+        </dependency>
+
+        <dependency>
+            <groupId>com.ickstream.common.ickp2p.java</groupId>
+            <artifactId>libickstream-ickp2p-java-native-jni32</artifactId>
+            <type>jnilib</type>
+            <version>1.0-SNAPSHOT</version>
+        </dependency>
+
+        <dependency>
+            <groupId>com.ickstream.common.ickp2p.java</groupId>
+            <artifactId>libickstream-ickp2p-java-native-jni64</artifactId>
+            <type>so</type>
+            <version>1.0-SNAPSHOT</version>
+        </dependency>
+
+        <dependency>
+            <groupId>com.ickstream.common.ickp2p.java</groupId>
+            <artifactId>libickstream-ickp2p-java-native-jni32</artifactId>
+            <type>so</type>
+            <version>1.0-SNAPSHOT</version>
+        </dependency>
+
+        <dependency>
+            <groupId>com.ickstream.common.ickp2p.java</groupId>
+            <artifactId>ickstream-ickp2p-java</artifactId>
+            <version>1.0-SNAPSHOT</version>
+        </dependency>
+
+        <dependency>
+            <groupId>com.ickstream.common.ickprotocol</groupId>
+            <artifactId>ickstream-ickprotocol-common</artifactId>
+            <version>1.0-SNAPSHOT</version>
+        </dependency>
+
+        <dependency>
+            <groupId>com.ickstream.common.ickprotocol</groupId>
+            <artifactId>ickstream-ickprotocol-core</artifactId>
+            <version>1.0-SNAPSHOT</version>
+        </dependency>
+
+        <dependency>
+            <groupId>com.ickstream.common.ickprotocol</groupId>
+            <artifactId>ickstream-ickprotocol-content</artifactId>
+            <version>1.0-SNAPSHOT</version>
+        </dependency>
+
+        <dependency>
+            <groupId>com.ickstream.common.ickprotocol</groupId>
+            <artifactId>ickstream-ickprotocol-player</artifactId>
+            <version>1.0-SNAPSHOT</version>
+        </dependency>
+
+        <dependency>
+            <groupId>com.ickstream.common.ickprotocol</groupId>
+            <artifactId>ickstream-ickprotocol-scrobble</artifactId>
+            <version>1.0-SNAPSHOT</version>
+        </dependency>
+
+        <dependency>
+            <groupId>com.ickstream.common.jsonrpc</groupId>
+            <artifactId>ickstream-jsonrpc</artifactId>
+            <version>1.0-SNAPSHOT</version>
+        </dependency>
+
+        <dependency>
+            <groupId>com.ickstream.player</groupId>
+            <artifactId>ickstream-ickplayer</artifactId>
+            <version>1.0-SNAPSHOT</version>
+        </dependency>
+
+        <dependency>
+            <groupId>com.googlecode.lanterna</groupId>
+            <artifactId>lanterna</artifactId>
+            <version>2.1.5</version>
+        </dependency>
+
+        <!-- javadoc dependencies -->
+        <dependency>
+            <groupId>com.ickstream.common.ickp2p.java</groupId>
+            <artifactId>ickstream-ickp2p-java</artifactId>
+            <version>1.0-SNAPSHOT</version>
+            <classifier>javadoc</classifier>
+        </dependency>
+
+        <dependency>
+            <groupId>com.ickstream.common.ickp2p.java</groupId>
+            <artifactId>ickstream-ickp2p-java-interface</artifactId>
+            <version>1.0-SNAPSHOT</version>
+            <classifier>javadoc</classifier>
+        </dependency>
+
+        <dependency>
+            <groupId>com.ickstream.common.ickprotocol</groupId>
+            <artifactId>ickstream-ickprotocol-common</artifactId>
+            <version>1.0-SNAPSHOT</version>
+            <classifier>javadoc</classifier>
+        </dependency>
+
+        <dependency>
+            <groupId>com.ickstream.common.ickprotocol</groupId>
+            <artifactId>ickstream-ickprotocol-core</artifactId>
+            <version>1.0-SNAPSHOT</version>
+            <classifier>javadoc</classifier>
+        </dependency>
+
+        <dependency>
+            <groupId>com.ickstream.common.ickprotocol</groupId>
+            <artifactId>ickstream-ickprotocol-content</artifactId>
+            <version>1.0-SNAPSHOT</version>
+            <classifier>javadoc</classifier>
+        </dependency>
+
+        <dependency>
+            <groupId>com.ickstream.common.ickprotocol</groupId>
+            <artifactId>ickstream-ickprotocol-scrobble</artifactId>
+            <version>1.0-SNAPSHOT</version>
+            <classifier>javadoc</classifier>
+        </dependency>
+
+        <dependency>
+            <groupId>com.ickstream.common.ickprotocol</groupId>
+            <artifactId>ickstream-ickprotocol-player</artifactId>
+            <version>1.0-SNAPSHOT</version>
+            <classifier>javadoc</classifier>
+        </dependency>
+
+        <dependency>
+            <groupId>com.ickstream.common.jsonrpc</groupId>
+            <artifactId>ickstream-jsonrpc</artifactId>
+            <version>1.0-SNAPSHOT</version>
+            <classifier>javadoc</classifier>
+        </dependency>
+
+    </dependencies>
+    <build>
+        <plugins>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-source-plugin</artifactId>
+                <executions>
+                    <execution>
+                        <id>attach-sources</id>
+                        <goals>
+                            <goal>jar</goal>
+                        </goals>
+                    </execution>
+                </executions>
+            </plugin>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-jar-plugin</artifactId>
+                <configuration>
+                    <archive>
+                        <manifest>
+                            <addClasspath>true</addClasspath>
+                            <classpathPrefix>lib/</classpathPrefix>
+                            <useUniqueVersions>false</useUniqueVersions>
+                            <mainClass>com.ickstream.samples.player.SamplePlayer</mainClass>
+                        </manifest>
+                    </archive>
+                </configuration>
+            </plugin>
+            <plugin>
+                <artifactId>maven-assembly-plugin</artifactId>
+                <version>2.3</version>
+                <executions>
+                    <execution>
+                        <id>assembly</id>
+                        <phase>package</phase>
+                        <goals>
+                            <goal>single</goal>
+                        </goals>
+                        <configuration>
+                            <appendAssemblyId>false</appendAssemblyId>
+                            <descriptors>
+                                <descriptor>src/main/assembly/assembly.xml</descriptor>
+                            </descriptors>
+                        </configuration>
+                    </execution>
+                </executions>
+            </plugin>
+        </plugins>
+    </build>
+</project>
