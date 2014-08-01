@@ -44,6 +44,12 @@
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
     </properties>
 
+    <scm>
+        <connection>scm:git:git@github.com:ickStream/ickstream-java-samples.git</connection>
+        <url>scm:git:git@github.com:ickStream/ickstream-java-samples.git</url>
+        <developerConnection>scm:git:git@github.com:ickStream/ickstream-java-samples.git</developerConnection>
+    </scm>
+
     <dependencies>
 
         <dependency>
