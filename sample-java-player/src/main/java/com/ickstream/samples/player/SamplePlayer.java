@@ -218,7 +218,7 @@ public class SamplePlayer extends DiscoveryAdapter implements MessageListener, S
         playerStatus = new PlayerStatus(new PlaybackQueue(playbackQueueStorage));
         playerStatus.setStorage(playerStatusStorage);
 
-        playerManager = new DummyPlayerManager(ipAddress, playerStatus, notificationSender, scrobbleService, null, this);
+        playerManager = new DummyPlayerManager(NetworkAddressHelper.getNetworkHardwareAddress(), playerStatus, notificationSender, scrobbleService, null, this);
         if (device != null) {
             playerManager.setName(device.getName());
         } else if (playerManager.getName() == null) {
