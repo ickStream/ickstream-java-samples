@@ -165,7 +165,7 @@ public class DummyPlayerManager implements PlayerManager {
     @Override
     public String getUserId() {
         Preferences preferences = Preferences.userNodeForPackage(this.getClass());
-        return preferences.get("accessToken", null);
+        return preferences.get("userId", null);
     }
 
     @Override
