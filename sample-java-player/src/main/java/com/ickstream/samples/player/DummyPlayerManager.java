@@ -44,7 +44,10 @@ import com.ickstream.protocol.common.exception.ServiceTimeoutException;
 import com.ickstream.protocol.service.content.ContentService;
 import com.ickstream.protocol.service.content.ContentServiceFactory;
 import com.ickstream.protocol.service.content.GetItemStreamingRefRequest;
-import com.ickstream.protocol.service.core.*;
+import com.ickstream.protocol.service.core.CoreService;
+import com.ickstream.protocol.service.core.CoreServiceFactory;
+import com.ickstream.protocol.service.core.DeviceResponse;
+import com.ickstream.protocol.service.core.SetDeviceAddressRequest;
 import com.ickstream.protocol.service.player.*;
 import com.ickstream.protocol.service.scrobble.PlayedItem;
 import com.ickstream.protocol.service.scrobble.ScrobbleService;
@@ -52,7 +55,10 @@ import com.ickstream.protocol.service.scrobble.ScrobbleServiceFactory;
 
 import java.net.URI;
 import java.net.URISyntaxException;
-import java.util.*;
+import java.util.Collections;
+import java.util.List;
+import java.util.Timer;
+import java.util.TimerTask;
 import java.util.prefs.BackingStoreException;
 import java.util.prefs.Preferences;
 
@@ -121,6 +127,7 @@ public class DummyPlayerManager implements PlayerManager {
             preferences.put("accessToken", accessToken);
         } else {
             preferences.remove("accessToken");
+            preferences.remove("userId");
         }
         try {
             preferences.flush();
@@ -145,6 +152,23 @@ public class DummyPlayerManager implements PlayerManager {
     }
 
     @Override
+    public void setUserId(String userId) {
+        Preferences preferences = Preferences.userNodeForPackage(this.getClass());
+        preferences.put("userId", userId);
+        try {
+            preferences.flush();
+        } catch (BackingStoreException e) {
+            e.printStackTrace();
+        }
+    }
+
+    @Override
+    public String getUserId() {
+        Preferences preferences = Preferences.userNodeForPackage(this.getClass());
+        return preferences.get("accessToken", null);
+    }
+
+    @Override
     public Boolean hasAccessToken() {
         Preferences preferences = Preferences.userNodeForPackage(this.getClass());
         String accessToken = preferences.get("accessToken", null);
@@ -163,6 +187,7 @@ public class DummyPlayerManager implements PlayerManager {
         String previousCloudCoreUrl = getCloudCoreUrl();
         if (!previousCloudCoreUrl.equals(cloudCoreUrl)) {
             preferences.remove("accessToken");
+            preferences.remove("userId");
             preferences.put("cloudCoreUrl", cloudCoreUrl);
             try {
                 preferences.flush();
@@ -328,6 +353,7 @@ public class DummyPlayerManager implements PlayerManager {
         notification.setPlaybackQueueMode(playerStatus.getPlaybackQueueMode());
         if (hasAccessToken()) {
             notification.setCloudCoreStatus(CloudCoreStatus.REGISTERED);
+            notification.setUserId(getUserId());
         } else {
             notification.setCloudCoreStatus(CloudCoreStatus.UNREGISTERED);
         }
