@@ -403,4 +403,9 @@ public class DummyPlayerManager implements PlayerManager {
     public Double getSeekPosition() {
         return seekPosition;
     }
+
+    @Override
+    public void setSeekPosition(Double seekPos) {
+        this.seekPosition = seekPos;
+    }
 }
