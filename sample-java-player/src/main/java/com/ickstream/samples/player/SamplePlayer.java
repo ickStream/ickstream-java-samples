@@ -44,10 +44,7 @@ import com.ickstream.protocol.common.exception.ServiceTimeoutException;
 import com.ickstream.protocol.common.exception.UnauthorizedException;
 import com.ickstream.protocol.service.ServiceInformation;
 import com.ickstream.protocol.service.content.DeviceContentService;
-import com.ickstream.protocol.service.core.CoreService;
-import com.ickstream.protocol.service.core.CoreServiceFactory;
-import com.ickstream.protocol.service.core.DeviceResponse;
-import com.ickstream.protocol.service.core.SetDeviceAddressRequest;
+import com.ickstream.protocol.service.core.*;
 import com.ickstream.protocol.service.player.PlayerService;
 import com.ickstream.protocol.service.scrobble.ScrobbleService;
 import com.ickstream.protocol.service.scrobble.ScrobbleServiceFactory;
@@ -146,6 +143,20 @@ public class SamplePlayer extends DiscoveryAdapter implements MessageListener, S
             try {
                 // Update device address in cloud
                 device = coreService.setDeviceAddress(request);
+
+                // If userId doesn't already exist, request userId, this is code to upgrade player if registered before
+                // addDevice returned a userId
+                if (preferences.get("userId", null) == null) {
+                    GetUserResponse user = coreService.getUser();
+                    if (user != null) {
+                        preferences.put("userId", user.getId());
+                        try {
+                            preferences.flush();
+                        } catch (BackingStoreException e) {
+                            e.printStackTrace();
+                        }
+                    }
+                }
 
                 // Get reference to scrobbling service
                 scrobbleService = ScrobbleServiceFactory.getScrobbleService(cloudCoreUrl, accessToken);
