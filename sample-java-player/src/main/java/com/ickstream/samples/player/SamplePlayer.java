@@ -229,13 +229,13 @@ public class SamplePlayer extends DiscoveryAdapter implements MessageListener, S
         playerStatus = new PlayerStatus(new PlaybackQueue(playbackQueueStorage));
         playerStatus.setStorage(playerStatusStorage);
 
-        playerManager = new DummyPlayerManager(NetworkAddressHelper.getNetworkHardwareAddress(), playerStatus, notificationSender, scrobbleService, null, this);
+        playerManager = new DummyPlayerManager(NetworkAddressHelper.getNetworkHardwareAddress(), playerStatus, notificationSender, scrobbleService, null, this, syncObject);
         if (device != null) {
             playerManager.setName(device.getName());
         } else if (playerManager.getName() == null) {
             playerManager.setName("Sample Player");
         }
-        playerService = new PlayerCommandService(API_KEY, playerManager, playerStatus);
+        playerService = new PlayerCommandService(API_KEY, playerManager, playerStatus, syncObject);
 
         // Setup ickStream P2P module and announce the current device on the network
         ickP2p = new IckP2pJNI();

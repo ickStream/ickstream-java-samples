@@ -75,14 +75,17 @@ public class DummyPlayerManager implements PlayerManager {
     private StreamingReference playingStreamingRef;
     private MessageLogger messageLogger;
     private ServiceUrlManager serviceUrlManager;
+    private final Object syncObject;
 
-    public DummyPlayerManager(String hardwareId, PlayerStatus playerStatus, PlayerNotificationSender notificationSender, ScrobbleService scrobbleService, MessageLogger messageLogger, ServiceUrlManager serviceUrlManager) {
+    public DummyPlayerManager(String hardwareId, PlayerStatus playerStatus, PlayerNotificationSender notificationSender, ScrobbleService scrobbleService, MessageLogger messageLogger, ServiceUrlManager serviceUrlManager, Object syncObject) {
         this.notificationSender = notificationSender;
         this.hardwareId = hardwareId;
         this.playerStatus = playerStatus;
         this.scrobbleService = scrobbleService;
         this.messageLogger = messageLogger;
         this.serviceUrlManager = serviceUrlManager;
+        //TODO: We should implement synchronization support based on the syncObject
+        this.syncObject = syncObject;
     }
 
     public void shutdown() {
