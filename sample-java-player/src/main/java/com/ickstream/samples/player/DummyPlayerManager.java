@@ -219,7 +219,19 @@ public class DummyPlayerManager implements PlayerManager {
 
     @Override
     public String getModel() {
-        return "SamplePlayer";
+        Preferences preferences = Preferences.userNodeForPackage(this.getClass());
+        return preferences.get("playerModel", null);
+    }
+
+    @Override
+    public void setModel(String model) {
+        Preferences preferences = Preferences.userNodeForPackage(this.getClass());
+        preferences.put("playerModel", model);
+        try {
+            preferences.flush();
+        } catch (BackingStoreException e) {
+            e.printStackTrace();
+        }
     }
 
     @Override
