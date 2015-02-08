@@ -63,6 +63,7 @@ import java.util.prefs.BackingStoreException;
 import java.util.prefs.Preferences;
 
 public class DummyPlayerManager implements PlayerManager {
+    private String id;
     private Double volume = 0.5d;
     private Double seekPosition = 0.0;
     private PlayerNotificationSender notificationSender;
@@ -152,6 +153,15 @@ public class DummyPlayerManager implements PlayerManager {
                 e.printStackTrace();
             }
         }
+    }
+
+    public void setId(String id) {
+        this.id = id;
+    }
+
+    @Override
+    public String getId() {
+        return id;
     }
 
     @Override

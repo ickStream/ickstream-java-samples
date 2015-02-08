@@ -232,8 +232,10 @@ public class SamplePlayer extends DiscoveryAdapter implements MessageListener, S
         playerManager = new DummyPlayerManager(NetworkAddressHelper.getNetworkHardwareAddress(), playerStatus, notificationSender, scrobbleService, null, this, syncObject);
         if (device != null) {
             playerManager.setName(device.getName());
+            playerManager.setId(device.getId());
         } else if (playerManager.getName() == null) {
             playerManager.setName("Sample Player");
+            playerManager.setId(UUID.randomUUID().toString().toUpperCase());
         }
         playerService = new PlayerCommandService(API_KEY, playerManager, playerStatus, syncObject);
 
@@ -248,7 +250,7 @@ public class SamplePlayer extends DiscoveryAdapter implements MessageListener, S
             // Set device name in case not registered
             if (device == null) {
                 device = new DeviceResponse();
-                device.setId(UUID.randomUUID().toString().toUpperCase());
+                device.setId(playerManager.getId());
                 device.setName(playerManager.getName());
             }
 
